@@ -1,12 +1,15 @@
 #  node.js RPM spec
 
-Master: [![Circle CI](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/master.svg?style=shield)](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/master)
-
-LTS: [![Circle CI](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/LTS.svg?style=shield)](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/LTS)
-
+| Blanch    | Status     | RPM        |
+|:----------|:----------:|:----------:|
+| `master` (v7, Current) | [![Circle CI](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/master.svg?style=shield)](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/master) | [![FedoraCopr](https://copr.fedorainfracloud.org/coprs/khara/nodejs/package/nodejs/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/khara/nodejs/) |
+| `v6.x` (v6, LTS) | [![Circle CI](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/v6.x.svg?style=shield)](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/v6.x) | [![FedoraCopr](https://copr.fedorainfracloud.org/coprs/khara/nodejs-lts/package/nodejs/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/khara/nodejs-lts/) |
+| `v4.x` (v4, LTS) | [![Circle CI](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/v4.x.svg?style=shield)](https://circleci.com/gh/kazuhisya/nodejs-rpm/tree/v4.x) | [![FedoraCopr](https://copr.fedorainfracloud.org/coprs/khara/nodejs-lts/package/nodejs/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/khara/nodejs-lts/) |
 
 - node.js rpm spec : https://github.com/kazuhisya/nodejs-rpm
 - node.js source   : https://nodejs.org/dist/
+
+
 
 # Compiled Package
 
@@ -81,7 +84,8 @@ git clone and make:
 
 ```bash
 $ git clone https://github.com/kazuhisya/nodejs-rpm.git
-# If you want to use the LTS version: git clone -b LTS https://github.com/kazuhisya/nodejs-rpm.git
+# If you want to use other version, You can clone to specify the branch name.
+# example: git clone -b v4.x https://github.com/kazuhisya/nodejs-rpm.git
 $ cd nodejs-rpm
 $ sudo yum-builddep ./nodejs.spec
 ```
