@@ -188,6 +188,8 @@ rm -rf $RPM_SOURCE_DIR/%{_orig_base}-v%{version}-linux-%{_node_arch}
 %{tapsetroot}
 
 %changelog
+* Mon Apr 03 2017 Ralph Angenendt <ralph.angenendt@scout24.com> - 7.8.0-1
+- update to 7.8.0, build for IS24 environment
 * Wed Mar 22 2017 Kazuhisa Hara <kazuhisya@gmail.com> - 7.7.4-1
 - updated to node.js version 7.7.4
 * Wed Mar 15 2017 Kazuhisa Hara <kazuhisya@gmail.com> - 7.7.3-1
