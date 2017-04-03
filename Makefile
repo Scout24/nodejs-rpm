@@ -13,6 +13,7 @@ ifeq "$(PYVERSION_270)" "1"
 	mkdir -p dist/{BUILD,RPMS,SPECS,SOURCES,SRPMS,install}
 	mv $(BASE)-v*.tar.gz dist/SOURCES/
 	cp -pf *.patch dist/SOURCES/
+	cp bui_node7_env.sh dist/SOURCES/
 	rpmbuild -ba \
 		--define "_topdir $(PWD)/dist" \
 		--define "buildroot $(PWD)/dist/install" \

@@ -1,8 +1,10 @@
-%define   _base node
+%define	  _prefix /opt/node7
+%define   _base is24-node
+%define   _orig_base node
 %define   _includedir %{_prefix}/include
 %define   _bindir %{_prefix}/bin
 %define   _libdir %{_prefix}/lib
-%define   _node_original_docdir /usr/share/doc/node
+%define   _node_original_docdir /opt/node7/share/doc/node
 %define   _build_number %(echo ${BUILD_NUMBER:-1})
 
 %if 0%{?rhel} == 5
@@ -13,17 +15,18 @@
 %global tapsetdir %{tapsetroot}/tapset/%{_build_cpu}
 
 Name:          %{_base}js
-Version:       7.7.4
+Version:       7.8.0
 Release:       %{_build_number}%{?dist}
 Provides:      %{_base}js(engine)
 Summary:       Node.js is a server-side JavaScript environment that uses an asynchronous event-driven model.
-Packager:      Kazuhisa Hara <kazuhisya@gmail.com>
+Packager:      Ralph Angenendt <ralph.angenendt@scout24.com>
 Group:         Development/Libraries
 License:       MIT License
 URL:           https://nodejs.org
-Source0:       %{url}/dist/v%{version}/%{_base}-v%{version}.tar.gz
+Source0:       %{url}/dist/v%{version}/%{_orig_base}-v%{version}.tar.gz
+Source1:       bui_node7_env.sh
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-tmp
-Prefix:        /usr
+Prefix:        /opt/node7
 BuildRequires: tar
 BuildRequires: gcc
 BuildRequires: gcc-c++
@@ -62,9 +65,8 @@ Summary:       Node Packaged Modules
 Group:         Development/Libraries
 License:       MIT License
 URL:           http://nodejs.org
-Obsoletes:     npm
-Provides:      npm
-Requires:      nodejs
+Provides:      is24-npm
+Requires:      is24-nodejs
 
 %description npm
 Node.js is a server-side JavaScript environment that uses an asynchronous event-driven model.
@@ -80,8 +82,8 @@ Node.js is a server-side JavaScript environment that uses an asynchronous event-
 This allows Node.js to get excellent performance based on the architectures of many Internet applications.
 
 %prep
-rm -rf $RPM_SOURCE_DIR/%{_base}-v%{version}
-%setup -q -n %{_base}-v%{version}
+rm -rf $RPM_SOURCE_DIR/%{_orig_base}-v%{version}
+%setup -q -n %{_orig_base}-v%{version} 
 
 %if 0%{?rhel} == 5
 %patch0 -p1
@@ -116,24 +118,26 @@ fi
 make binary %{?_smp_mflags}
 
 pushd $RPM_SOURCE_DIR
-mv $RPM_BUILD_DIR/%{_base}-v%{version}/%{_base}-v%{version}-linux-%{_node_arch}.tar.gz .
-rm -rf %{_base}-v%{version}
-tar zxvf %{_base}-v%{version}-linux-%{_node_arch}.tar.gz
+mv $RPM_BUILD_DIR/%{_orig_base}-v%{version}/%{_orig_base}-v%{version}-linux-%{_node_arch}.tar.gz .
+rm -rf %{_orig_base}-v%{version}
+tar zxvf %{_orig_base}-v%{version}-linux-%{_node_arch}.tar.gz
 popd
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir  -p $RPM_BUILD_ROOT%{_prefix}
-cp -Rp $RPM_SOURCE_DIR/%{_base}-v%{version}-linux-%{_node_arch}/* $RPM_BUILD_ROOT%{_prefix}/
-mkdir -p $RPM_BUILD_ROOT%{_defaultdocdir}/%{_base}-v%{version}/
+cp -Rp $RPM_SOURCE_DIR/%{_orig_base}-v%{version}-linux-%{_node_arch}/* $RPM_BUILD_ROOT%{_prefix}/
+mkdir -p $RPM_BUILD_ROOT%{_defaultdocdir}/%{_orig_base}-v%{version}/
 
 for file in CHANGELOG.md LICENSE README.md ; do
-    mv $RPM_BUILD_ROOT%{_prefix}/$file $RPM_BUILD_ROOT%{_defaultdocdir}/%{_base}-v%{version}/
+    mv $RPM_BUILD_ROOT%{_prefix}/$file $RPM_BUILD_ROOT%{_defaultdocdir}/%{_orig_base}-v%{version}/
 done
-mv $RPM_BUILD_ROOT%{_node_original_docdir}/* $RPM_BUILD_ROOT%{_defaultdocdir}/%{_base}-v%{version}/
+mkdir -p $RPM_BUILD_ROOT/etc/profile.d
+cp  %{SOURCE1} $RPM_BUILD_ROOT/etc/profile.d/
+mv $RPM_BUILD_ROOT%{_node_original_docdir}/* $RPM_BUILD_ROOT%{_defaultdocdir}/%{_orig_base}-v%{version}/
 rm -rf $RPM_BUILD_ROOT%{_node_original_docdir}
-mkdir -p $RPM_BUILD_ROOT%{_datarootdir}/%{_base}js
-mv $RPM_SOURCE_DIR/%{_base}-v%{version}-linux-%{_node_arch}.tar.gz $RPM_BUILD_ROOT%{_datarootdir}/%{_base}js/
+mkdir -p $RPM_BUILD_ROOT%{_datarootdir}/%{_orig_base}js
+mv $RPM_SOURCE_DIR/%{_orig_base}-v%{version}-linux-%{_node_arch}.tar.gz $RPM_BUILD_ROOT%{_datarootdir}/%{_orig_base}js/
 
 # prefix all manpages with "npm-"
 pushd $RPM_BUILD_ROOT%{_libdir}/node_modules/npm/man/
@@ -152,20 +156,22 @@ popd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-rm -rf $RPM_SOURCE_DIR/%{_base}-v%{version}-linux-%{_node_arch}
+rm -rf $RPM_SOURCE_DIR/%{_orig_base}-v%{version}-linux-%{_node_arch}
 
 %files
 %defattr(-,root,root,-)
-%{_defaultdocdir}/%{_base}-v%{version}
+%{_defaultdocdir}/%{_orig_base}-v%{version}
 %defattr(755,root,root)
 %{_bindir}/node
+%defattr(644,root,root)
+/etc/profile.d/bui_node7_env.sh
 
 %doc
 %{_mandir}/man1/node*
 
 %files binary
 %defattr(-,root,root,-)
-%{_datarootdir}/%{_base}js/%{_base}-v%{version}-linux-%{_node_arch}.tar.gz
+%{_datarootdir}/%{_orig_base}js/%{_orig_base}-v%{version}-linux-%{_node_arch}.tar.gz
 
 %files npm
 %defattr(-,root,root,-)
