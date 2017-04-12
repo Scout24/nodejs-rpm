@@ -15,7 +15,7 @@
 %global tapsetdir %{tapsetroot}/tapset/%{_build_cpu}
 
 Name:          %{_base}js
-Version:       7.8.0
+Version:       7.9.0
 Release:       %{_build_number}%{?dist}
 Provides:      %{_base}js(engine)
 Summary:       Node.js is a server-side JavaScript environment that uses an asynchronous event-driven model.
@@ -188,6 +188,8 @@ rm -rf $RPM_SOURCE_DIR/%{_orig_base}-v%{version}-linux-%{_node_arch}
 %{tapsetroot}
 
 %changelog
+* Wed Apr 12 2017 Ralph Angenendt <ralph.angenendt@scout24.com> - 7.9.0-1
+- update to 7.9.0 
 * Mon Apr 03 2017 Ralph Angenendt <ralph.angenendt@scout24.com> - 7.8.0-1
 - update to 7.8.0, build for IS24 environment
 * Wed Mar 22 2017 Kazuhisa Hara <kazuhisya@gmail.com> - 7.7.4-1
